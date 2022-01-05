@@ -1,8 +1,8 @@
 # Final Project : 사내식당 식수 인원 예측 모델
 - 목적 : 데이터 기반으로 정확도 높은 예측모델 수립해 잔반 발생량 등 사내식당에 들어가는 비용을 줄이고자 합니다.
 - 일정 : 2021.12.28 ~ 2022.01.20
-- 설명 : 파이썬 판다스로 데이터 전처리 / R을 통해 변수가 통계적으로 의미있는지 파악 / scikit-learn과 tensorflow로 예측모델 구축
-- 팀원 : acesaga, jiyun193, kserjseob
+- 설명 : pandas로 데이터 전처리 / R을 통해 변수가 통계적으로 의미있는지 파악 / scikit-learn과 tensorflow로 예측모델 구축
+- 팀원 : @acesaga, @jiyun193, @kserjseob
 
 ## 1. Library
 - python : 3.9.7
