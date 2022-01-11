@@ -54,3 +54,10 @@
 	- SELECT WHERE IN 등 다양하게 사용해 데이터 뽑아내기
 	- 뽑아낸 데이터 SQLite3로 파이썬으로 추출하기
 4. py파일로 소스화하는 방법에 대해 여쭤보고 계획 짜기
+
+
+## 2022.01.11 :: Telecommuting
+1. SQLite Setting 완료
+2. Github merge
+3. Data Encoding에서 MinMax Scalar or Standard Scalar는 필요에 따라 각자.
+4. Data Encoding에서는 One-Hot Encoding과 불필요한 메뉴 제거, 카테고리화 작업 진행
