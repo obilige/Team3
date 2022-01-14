@@ -1,5 +1,5 @@
-lunch <- read.csv("data/lunch_train_exencoding.csv")
-dinner <- read.csv("data/dinner_train_exencoding.csv")
+lunch <- read.csv("data/lunch_r.csv")
+dinner <- read.csv("data/dinner_r.csv")
 library(dplyr)
 library(pwr)
 library(pgirmess)
@@ -120,47 +120,59 @@ kruskalmc(dinner$dinner_number, dinner$weekdays)
 ### DataFrame 내 모든 변수 중 선형회귀분석에 가장 적합한 변수들은 무엇인지 파악
 ## 점심
 # AIC
-fit <- lm(lunch_number ~ ., data = lunch)
+fit <- lm(lunch_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = lunch)
 summary(fit)
 
-fit2 <- lm(Murder ~ Population + Illiteracy, data = df)
-summary(fit2)
-# p-value, R-squared 값 모두 더 좋아지는 것 확인. 불필요한 독립변수는 빼줘야해.
-
-AIC(fit, fit2)
+AIC(fit)
 # df      AIC
 # fit   6 241.6429
-# fit2  4 237.6565
-# AIC값은 작을수록 좋은 것.
-
 
 # Backward Stepwise Regression
-full.mode1 <- lm(Murder ~ ., data = df)
-reduced.model <- step(full.mode1, direction = "backward")
+full.model <- lm(lunch_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = lunch)
+reduced.model <- step(full.model, direction = "backward")
 reduced.model
 # call에 최적의 회귀선을 도출해준다.
 # lm(formula = Murder ~ Population + Illiteracy, data = df)
 
 
 # Fowward Stepwise Regression
-empty.mode1 <- lm(Murder ~ 1, data = df)
-added.model <- step(empty.mode1, direction = "forward",
-                    scope = (Murder ~ Population + Income + Illiteracy + Frost))
+empty.model <- lm(lunch_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = lunch)
+added.model <- step(empty.model, direction = "forward",
+                    scope = (lunch_number ~ .))
 added.model
 # call에 최적의 회귀선을 도출해준다.
 # lm(formula = Murder ~ Population + Illiteracy, data = df)
 
 
+## 저녁
+# AIC
+fit <- lm(dinner_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = dinner)
+summary(fit)
+
+AIC(fit)
+
+# Backward Stepwise Regression
+full.model <- lm(dinner_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = dinner)
+reduced.model <- step(full.model, direction = "backward")
+reduced.model
+
+
+# Fowward Stepwise Regression
+empty.model <- lm(dinner_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = dinner)
+added.model <- step(empty.model, direction = "forward",
+                    scope = (lunch_number ~ .))
+added.model
+
+
 
 ## 점심
 # All Subset Regression
-result <- regsubsets(lunch_number ~ ., data = lunch, nbest = 23)
+result <- regsubsets(lunch_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = lunch, nbest = 13)
 result
 plot(result, scale="adjr2")
 
 ## 저녁
 # All Subset Regression
-result <- regsubsets(dinner_number ~ ., data = dinner, nbest = 23)
+result <- regsubsets(dinner_number ~ worker_number + real_number + vacation_number + biztrip_number + overtime_number + telecom_number + temperature + rain + wind + humidity + discomfort_index + perceived_temperature, data = dinner, nbest = 13)
 result
 plot(result, scale="adjr2")
-
