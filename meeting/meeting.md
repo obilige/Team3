@@ -61,3 +61,15 @@
 2. Github merge
 3. Data Encoding에서 MinMax Scalar or Standard Scalar는 필요에 따라 각자.
 4. Data Encoding에서는 One-Hot Encoding과 불필요한 메뉴 제거, 카테고리화 작업 진행
+
+
+## 2022.01.13 :: Telecommuting
+1. SQL에서 쿼리문을 이용해 데이터 조회 및 EDA 하기
+    - 상관관계분석은 X
+2. R을 통해 통계 EDA 실행하고 markdown 형태로 보고서 만들기
+3. 머신러닝, 딥러닝 학습효과 적으면 날씨 데이터 교체
+4. 프로젝트 프로세스 공유하기
+    - [CSV -> Python(전처리, 데이터테이블 형태변화, SQLite3로 데이터베이스 만들기) -> SQL(데이터조회) -> Python(시각화) -> 머신러닝/딥러닝]
+5. 각자 담당할 ML, DL 모델 생각하기
+6. 모듈화에 대해 강사님께 질문하고 진행하기
+7. 식품분류 CNN/API가 막히는 중. 질문하고 진행해보기
