@@ -20,3 +20,9 @@
 - 파생변수 :
     + 날짜 -> 계절, 월, 기온, 강수량, 강설량, 체감온도, 불쾌지수
     + 메뉴 -> 밥, 국, 메인반찬, 신메뉴 여부
+
+
+## 3. Project
+- 프로젝트 과정 :
+![이미지](https://github.com/obilige/Team3/blob/jaehoon/image/Diagram_2.jpg)
+![이미지](https://github.com/obilige/Team3/blob/jaehoon/image/Diagram_4.jpg)
