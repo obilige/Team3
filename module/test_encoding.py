@@ -1,8 +1,4 @@
-import pandas as pd
-import numpy as np
-import time
-
-def transform_test(data):
+def transform(data, weather):
     #### 1. 일자를 datetime 형태로 변경
     data['일자'] = pd.to_datetime(data['일자'])
     #### 2. 실질 사내 근무자 수
@@ -164,10 +160,8 @@ def transform_test(data):
     del data['중식메뉴']
     del data['석식메뉴']
 
-    return data
 
 
-def transform_weather(weather):
     #### 6. 날짜 데이터 merge
     # merge 전 날짜 데이터 전처리
     weather['일자'] = pd.to_datetime(weather['일시'])
@@ -186,10 +180,7 @@ def transform_weather(weather):
     weather['불쾌지수'] = 9/5 * weather['기온'] - 0.55 * (1-weather['습도']/100) * (9/5 * weather['기온'] - 26) + 32
     weather['체감온도'] = 13.12 + 0.6215 * weather['기온'] - 11.37 * (weather['풍속'] ** 0.16) + 0.3965 * (weather['풍속'] ** 0.16) * weather['기온']
 
-    return weather
 
-
-def merge_data(data, weather)
     #### 7. 칼럼명 영어로 바꾸기
     df = pd.merge(data, weather, how='inner', on='일자')
 
