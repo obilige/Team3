@@ -195,3 +195,48 @@ def transform(data, weather):
     
 
     return lunch_df_test, dinner_df_test
+
+
+class Encoding():
+    def __init__(self, lunch, dinner):
+        self.lunch = lunch
+        self.dinner = dinner
+    
+    def Na(self):
+        self.lunch = self.lunch.dropna()
+        self.dinner = self.dinner.dropna()
+
+        return self.lunch, self.dinner
+
+    def format(self):
+        data_list = [self.lunch, self.dinner]
+        for data in data_list:
+            data['year'] = data['year'].astype(int)
+            data['month'] = data['month'].astype(int)
+            data['date'] = data['date'].astype(int)
+        
+        return self.lunch, self.dinner
+        
+    def label_rice(self):
+        data_list = [self.lunch, self.dinner]
+        for data in data_list:
+            for index in range(len(data['lunch_rice'])):
+                if index == "밥":
+                    data['lunch_rice'][index] = 1
+                else:
+                    data['lunch_rice'][index] = 0
+
+            del data['lunch_soup']
+            del data['lunch_main']
+
+            data['lunch_rice'] = data['lunch_rice'].astype(int)
+    
+        return self.lunch, self.dinner
+
+
+    def onehot(self):
+        data_list = [self.lunch, self.dinner]
+        for data in data_list:
+            data = pd.get_dummies(data)
+        
+        return self.lunch, self.dinner
