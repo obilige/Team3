@@ -1,3 +1,6 @@
+from unicodedata import category
+
+
 def transform(data, weather):
     #### 1. 일자를 datetime 형태로 변경
     data['일자'] = pd.to_datetime(data['일자'])
@@ -197,10 +200,12 @@ def transform(data, weather):
     return lunch_df_test, dinner_df_test
 
 
-class Encoding():
-    def __init__(self, lunch, dinner):
+class Forecast_Encoding():
+    def __init__(self, lunch, dinner, train_lunch, train_dinner):
         self.lunch = lunch
         self.dinner = dinner
+        self.train_lunch = train_lunch
+        self.train_dinner = train_dinner
     
     def Na(self):
         self.lunch = self.lunch.dropna()
@@ -208,30 +213,41 @@ class Encoding():
 
         return self.lunch, self.dinner
 
+
     def format(self):
         data_list = [self.lunch, self.dinner]
         for data in data_list:
-            data['year'] = data['year'].astype(int)
-            data['month'] = data['month'].astype(int)
-            data['date'] = data['date'].astype(int)
+            data['year'] = data['year'].astype(category)
+            data['month'] = data['month'].astype(category)
+            data['date'] = data['date'].astype(category)
         
         return self.lunch, self.dinner
         
+
     def label_rice(self):
         data_list = [self.lunch, self.dinner]
         for data in data_list:
             for index in range(len(data['lunch_rice'])):
                 if index == "밥":
-                    data['lunch_rice'][index] = 1
+                    data['lunch_rice'][index] = "Y"
                 else:
-                    data['lunch_rice'][index] = 0
+                    data['lunch_rice'][index] = "N"
 
             del data['lunch_soup']
             del data['lunch_main']
-
-            data['lunch_rice'] = data['lunch_rice'].astype(int)
     
         return self.lunch, self.dinner
+
+    # 수정해야함
+    def equal_columns(self, train, forecast):
+        onehot_list = train.columns
+        for c in onehot_list:
+            if c not in forecast.columns:
+                forecast[c] = 0
+
+        data = forecast.loc[:, train.columns]
+
+        return data
 
 
     def onehot(self):

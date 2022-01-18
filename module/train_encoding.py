@@ -1,11 +1,6 @@
-import numpy as np
-import pandas as pd
-import sqlite3
-from os import mkdir
-import csv
-from sklearn.model_selection import train_test_split
+from unicodedata import category
 
-class Encoding():
+class Train_Encoding():
     def __init__(self, lunch, dinner):
         self.lunch = lunch
         self.dinner = dinner
@@ -34,9 +29,9 @@ class Encoding():
     def format(self):
         data_list = [self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test]
         for data in data_list:
-            data['year'] = data['year'].astype(int)
-            data['month'] = data['month'].astype(int)
-            data['date'] = data['date'].astype(int)
+            data['year'] = data['year'].astype(category)
+            data['month'] = data['month'].astype(category)
+            data['date'] = data['date'].astype(category)
         
         return self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test
         
@@ -45,15 +40,13 @@ class Encoding():
         for data in data_list:
             for index in range(len(data['lunch_rice'])):
                 if index == "밥":
-                    data['lunch_rice'][index] = 1
+                    data['lunch_rice'][index] = "Y"
                 else:
-                    data['lunch_rice'][index] = 0
+                    data['lunch_rice'][index] = "N"
 
             del data['lunch_soup']
             del data['lunch_main']
-
-            data['lunch_rice'] = data['lunch_rice'].astype(int)
-    
+            
         return self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test
 
 
