@@ -37,7 +37,7 @@
 
 ## 4. Analysis
 - Query : 쿼리문으로 DB에서 데이터를 조회, 분석해 다음과 같은 결과 도출
-![이미지](https://github.com/obilige/Team3/blob/master/image/Diagram_5.jpg)
+![이미지](https://github.com/obilige/Team3/blob/master/image/Diagram_5.png)
     + 메뉴에서 밥&특식, 찌개&국, 면유무 등에서 중식 인원 수에 영향이 있는 것으로 보임
     + 특히, 국 종류를 선호하는 것으로 판단
     + 기온별 차이에 따라 식수 인원 증감 X
