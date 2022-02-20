@@ -5,7 +5,7 @@ class Train_Encoding():
         self.lunch = lunch
         self.dinner = dinner
     
-    def Na(self):
+    def DropNa(self):
         self.lunch = self.lunch.dropna()
         self.dinner = self.dinner.dropna()
 
