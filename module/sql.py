@@ -128,21 +128,25 @@ class Transform():
         self.data['연휴'] = holiday_gap
 
 
+        weekdays=[]
+        
         for i in range(len(self.data.index)):
-            if self.data['weekdays'][i] == "월":
-                self.data['weekdays'][i] = "monday"
-            elif self.data['weekdays'][i] == "화":
-                self.data['weekdays'][i] = "tuesday"
-            elif self.data['weekdays'][i] == "수":
-                self.data['weekdays'][i] = "wednesday"
-            elif self.data['weekdays'][i] == "목":
-                self.data['weekdays'][i] = "thursday"
-            elif self.data['weekdays'][i] == "금":
-                self.data['weekdays'][i] = "friday"
-            elif self.data['weekdays'][i] == "토":
-                self.data['weekdays'][i] = "saturday"
-            elif self.data['weekdays'][i] == "일":
-                self.data['weekdays'][i] = "sunday"
+            if self.data['요일'][i] == "월":
+                weekdays.append("monday")
+            elif self.data['요일'][i] == "화":
+                weekdays.append("tuesday")
+            elif self.data['요일'][i] == "수":
+                weekdays.append("wednesday")
+            elif self.data['요일'][i] == "목":
+                weekdays.append("thursday")
+            elif self.data['요일'][i] == "금":
+                weekdays.append("friday")
+            elif self.data['요일'][i] == "토":
+                weekdays.append("saturday")
+            elif self.data['요일'][i] == "일":
+                weekdays.append("sunday")
+            
+        self.data['요일'] = weekdays
 
         #### 4. 신메뉴 여부 칼럼 만들기 Y = 신메뉴 / N = 신메뉴 X
         New_lunch = []
@@ -287,19 +291,23 @@ class Transform():
 
         return self.weather
 
-    
+    # 2022.02.26일 transfrom_data, transform_weather 함수로 얻은 결과값을 make_csv에 자동으로 입력되게 만들고 싶음
+    # make_csv를 클래스에서 뺀 다음 두 함수의 리턴값을 직접 입력해주는 방식도 괜찮지만, 모듈은 만든 이유가 자동화이기 때문에 가능하면 두 함수의 리턴값을 입력하게 만들고 싶음.
+    # 현재 def make_csv(self): 코드는 미완성. 완성되면 지금 이 글 지움
     def make_csv(self):
-        self.df = pd.merge(self.data(), self.weather, how='inner', on='일자')
+        data = transform_data(self)
+        weather = transform_weather(self)
+        df = pd.merge(data, weather, how='inner', on='일자')
 
         col_eng = ['datetime', 'weekdays', 'worker_number', 'real_number', 'vacation_number', 'biztrip_number', 'overtime_number', 'telecom_number', 'lunch_number',
             'dinner_number', 'year', 'month', 'date', 'season', 'vacation', 'new_lunch', 'new_dinner', 'lunch_rice', 'lunch_soup', 'lunch_main', 'dinner_rice', 'dinner_soup', 'dinner_main',
             'temperature', 'rain', 'wind', 'humidity', 'discomfort_index', 'perceived_temperature']
 
-        self.df.columns=col_eng
+        df.columns=col_eng
 
-        return self.df
+        return df
 
-#Save_DB의 data // data = Transform()이어야 합니다.
+#Save_DB에 입력될 data는 Transform.make_csv의 리턴값이어야 합니다.
 class Save_DB():
     def __init__(self, data):
         self.data = data
