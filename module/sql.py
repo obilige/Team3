@@ -9,7 +9,7 @@ def make_database():
     try:
         conn = sqlite3.connect('data/team3.db')
     except sqlite3.OperationalError:
-        mkdir('folder_A')
+        mkdir('error')
     finally:
         conn = sqlite3.connect('data/team3.db')
         cur = conn.cursor()
