@@ -293,7 +293,7 @@ class Transform():
 
     # 2022.02.26일 transfrom_data, transform_weather 함수로 얻은 결과값을 make_csv에 자동으로 입력되게 만들고 싶음
     # make_csv를 클래스에서 뺀 다음 두 함수의 리턴값을 직접 입력해주는 방식도 괜찮지만, 모듈은 만든 이유가 자동화이기 때문에 가능하면 두 함수의 리턴값을 입력하게 만들고 싶음.
-    # 현재 def make_csv(self): 코드는 미완성. 완성되면 지금 이 글 지움
+    # 해결
     def make_csv(self):
         data = self.transform_data()
         weather = self.transform_weather()
