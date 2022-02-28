@@ -333,7 +333,7 @@ class Save_DB():
         calendar_data.to_csv("data/calendar_data.csv", encoding='utf-8', index=False)
 
         # 함수 호출로 csv 데이터를 db에 저장할 수 있게 만들었습니다.
-    def hr_db():
+    def hr_db(self):
         conn = sqlite3.connect("data/team3.db")
         cur = conn.cursor()
 
@@ -347,7 +347,7 @@ class Save_DB():
         conn.close()
 
 
-    def lunch_db():
+    def lunch_db(self):
         conn = sqlite3.connect("data/team3.db")
         cur = conn.cursor()
 
@@ -361,7 +361,7 @@ class Save_DB():
         conn.close()
 
 
-    def dinner_db():
+    def dinner_db(self):
         conn = sqlite3.connect("data/team3.db")
         cur = conn.cursor()
 
@@ -375,7 +375,7 @@ class Save_DB():
         conn.close()
 
 
-    def weather_db():
+    def weather_db(self):
         conn = sqlite3.connect("data/team3.db")
         cur = conn.cursor()
 
@@ -389,7 +389,7 @@ class Save_DB():
         conn.close()
 
 
-    def calendar_db():
+    def calendar_db(self):
         conn = sqlite3.connect("data/team3.db")
         cur = conn.cursor()
 
