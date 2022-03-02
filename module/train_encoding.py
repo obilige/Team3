@@ -68,7 +68,6 @@ class Train_Encoding():
             del data['dinner_soup']
             del data['dinner_main']
         
-
         return self.format()[0], self.format()[1], self.format()[2], self.format()[3]
 
 
