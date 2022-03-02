@@ -37,17 +37,18 @@ class Train_Encoding():
     # split_lunch와 dinner에서 train 데이터만 뽑아오는게 효율적일까? 유지보수 측면에서 불리하지 않울까?
 
     def format(self):
-        data_list = [self.dropna_lunch()[0], self.dropna_lunch()[2], self.dropna_dinner[0], self.dropna_dinner[2]]
+        data_list = [self.split_lunch()[0], self.split_lunch()[2], self.split_dinner[0], self.split_dinner[2]]
         for data in data_list:
             data['year'] = data['year'].astype(category)
             data['month'] = data['month'].astype(category)
             data['date'] = data['date'].astype(category)
         
-        return self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test
+        return self.split_lunch()[0], self.split_lunch()[2], self.split_dinner[0], self.split_dinner[2]
         
     def label_rice(self):
-        data_list = [self.format()]
-        for data in data_list:
+        lunch_list = [self.format()[0], self.format()[1]]
+        dinner_list = [self.format()[2], self.format()[3]]
+        for data in lunch_list:
             for index in range(len(data['lunch_rice'])):
                 if index == "밥":
                     data['lunch_rice'][index] = "Y"
@@ -56,18 +57,41 @@ class Train_Encoding():
         
             del data['lunch_soup']
             del data['lunch_main']
-            
-        return self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test
+
+        for data in dinner_list:
+            for index in range(len(data['dinner_rice'])):
+                if index == "밥":
+                    data['dinner_rice'][index] = "Y"
+                else:
+                    data['lunch_rice'][index] = "N"
+        
+            del data['dinner_soup']
+            del data['dinner_main']
+        
+
+        return self.format()[0], self.format()[1], self.format()[2], self.format()[3]
 
 
     def onehot(self):
-        data_list = [self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test]
+        data_list = [self.label_rice()[0], self.label_rice([1]), self.label_rice([2]), self.label_rice([3])]
         for data in data_list:
             data = pd.get_dummies(data)
         
-        return self.lunch_X_train, self.lunch_X_test, self.dinner_X_train, self.dinner_X_test
+        return self.label_rice()[0], self.label_rice([1]), self.label_rice([2]), self.label_rice([3])
 
 
+    def lunch_extract(self):
+        self.lunch_X_train = self.label_rice()[0]
+        self.lunch_y_train = self.label_rice()[1]
+        self.lunch_X_test = self.split_lunch()[1]
+        self.lunch_y_test = self.split_lunch()[3]
+        
+        return self.lunch_X_train, self.lunch_X_test, self.lunch_y_train, self.lunch_y_test
 
+    def dinner_extract(self):
+        self.dinner_X_train = self.label_rice()[2]
+        self.dinner_y_train = self.label_rice()[3]
+        self.dinner_X_test = self.split_dinner[1]
+        self.dinner_y_test = self.split_dinner[3]
 
-    
+        return self.dinner_X_train, self.dinner_X_test, self.dinner_y_train, self.dinner_y_test
