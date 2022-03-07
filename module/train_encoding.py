@@ -35,7 +35,7 @@ class Train_Encoding():
 
 
     # 형태를 변경해줘야하는건 train 데이터만
-    # split_lunch와 dinner에서 train 데이터만 뽑아오는게 효율적일까? 유지보수 측면에서 불리하지 않울까?
+    # split_lunch와 split_dinner에서 train 데이터만 뽑아오는게 효율적일까? 유지보수 측면에서 불리하지 않울까?
 
     def format(self):
         lunch_X_train = self.split_lunch()[0]
