@@ -17,7 +17,6 @@ class LSTM:
 
         # 데이터 스케일링
         standard_scaler = StandardScaler()
-        #점심
         lunch_fitted = standard_scaler.fit(self.lunch)
         lunch_output = standard_scaler.transform(self.lunch)
         lunch_output = pd.DataFrame(lunch_output, columns=self.lunch.columns, index=list(self.lunch.index.values))
@@ -78,7 +77,6 @@ class LSTM:
 
         # 데이터 스케일링
         standard_scaler = StandardScaler()
-        #저녁
         dinner_fitted = standard_scaler.fit(self.dinner)
         dinner_output = standard_scaler.transform(self.dinner)
         dinner_output = pd.DataFrame(dinner_output, columns=self.dinner.columns, index=list(self.dinner.index.values))
