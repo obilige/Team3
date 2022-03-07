@@ -291,9 +291,7 @@ class Transform():
 
         return self.weather
 
-    # 2022.02.26일 transfrom_data, transform_weather 함수로 얻은 결과값을 make_csv에 자동으로 입력되게 만들고 싶음
-    # make_csv를 클래스에서 뺀 다음 두 함수의 리턴값을 직접 입력해주는 방식도 괜찮지만, 모듈은 만든 이유가 자동화이기 때문에 가능하면 두 함수의 리턴값을 입력하게 만들고 싶음.
-    # 해결
+
     def make_csv(self):
         data = self.transform_data()
         weather = self.transform_weather()
@@ -307,7 +305,8 @@ class Transform():
 
         return df
 
-#Save_DB에 입력될 data는 Transform.make_csv의 리턴값이어야 합니다.
+# Save_DB에 입력될 data는 Transform.make_csv의 리턴값이어야 합니다.
+# 위에 데이터프레임을 변환하는 것도 DB 저장 과정이니 위 코드를 결합하겠습니다.
 class Save_DB():
     def __init__(self, data):
         self.data = data
@@ -333,6 +332,7 @@ class Save_DB():
         calendar_data.to_csv("data/calendar_data.csv", encoding='utf-8', index=False)
 
         # 함수 호출로 csv 데이터를 db에 저장할 수 있게 만들었습니다.
+        # 고민 :: 함수 호출 없이 save 함수에서 바로 저장까지 이어지도록 만들지, 유지보수 측면에 유리하게 그냥 이대로 둘지 고민 중입니다.
     def hr_db(self):
         conn = sqlite3.connect("data/team3.db")
         cur = conn.cursor()
@@ -401,3 +401,32 @@ class Save_DB():
 
         conn.commit()
         conn.close()
+
+
+
+# DB에 있는 데이터테이블, Pandas 데이터프레임으로 만들기
+def Load_DB():
+    conn = sqlite3.connect("data/team3.db")
+    sql = """SELECT calendar.datetime, weekdays, worker_number, real_number, vacation_number, biztrip_number, overtime_number, telecom_number, lunch_number, dinner_number, year, month, date, season, vacation, new_lunch, new_dinner, lunch_rice, lunch_soup, lunch_main, dinner_rice, dinner_soup, dinner_main, temperature, rain, wind, humidity, discomfort_index, perceived_temperature
+            FROM calendar
+            INNER JOIN weather ON calendar.datetime = weather.datetime
+            INNER JOIN dinner ON calendar.datetime = dinner.datetime
+            INNER JOIN lunch ON calendar.datetime = lunch.datetime
+            INNER JOIN hr ON calendar.datetime = hr.datetime"""
+    # 명령어를 담은 변수를 DB에 보내면 이 변수에 담긴 명령어를 실행하는 방식
+    # 명령어 변수를 실어나르고 DB에 실행시키고 결과를 파이썬으로 불러오는 객체 존재.
+
+    cur = conn.cursor()
+    cur.execute(sql)
+
+    values = []
+    for data in cur:
+        values.append(data)
+
+    conn.close()
+
+    df = pd.DataFrame(values, columns=['datetime', 'weekdays', 'worker_number', 'real_number', 'vacation_number', 'biztrip_number', 'overtime_number', 'telecom_number', 'lunch_number',
+            'dinner_number', 'year', 'month', 'date', 'season', 'vacation', 'new_lunch', 'new_dinner', 'lunch_rice', 'lunch_soup', 'lunch_main', 'dinner_rice', 'dinner_soup', 'dinner_main',
+            'temperature', 'rain', 'wind', 'humidity', 'discomfort_index', 'perceived_temperature'])
+    
+    return df
