@@ -2,89 +2,65 @@ from sklearn.model_selection import train_test_split
 from unicodedata import category
 
 class Train_Encoding():
-    def __init__(self, lunch, dinner):
-        self.lunch = lunch
-        self.dinner = dinner
-    
-    def kor_eng_lunch(self):
-        lunch = self.lunch
-        for i in range(len(lunch.index)):
-            if lunch['season'][i] == "겨울":
-                lunch['season'][i] = "winter"
-            elif lunch['season'][i] == "봄":
-                lunch['season'][i] = "spring"
-            elif lunch['season'][i] == "여름":
-                lunch['season'][i] = "summer"
-            elif lunch['season'][i] == "가을":
-                lunch['season'][i] = "fall"
-            else:
-                pass
+    def __init__(self, df):
+        self.df = df
         
-        for i in range(len(lunch.index)):
-            if lunch['weekdays'][i] == "월":
-                lunch['weekdays'][i] = "monday"
-            elif lunch['weekdays'][i] == "화":
-                lunch['weekdays'][i] = "tuesday"
-            elif lunch['weekdays'][i] == "수":
-                lunch['weekdays'][i] = "wednesday"
-            elif lunch['weekdays'][i] == "목":
-                lunch['weekdays'][i] = "thursday"
-            elif lunch['weekdays'][i] == "금":
-                lunch['weekdays'][i] = "friday"
-            elif lunch['weekdays'][i] == "토":
-                lunch['weekdays'][i] = "saturday"
-            elif lunch['weekdays'][i] == "일":
-                lunch['weekdays'][i] = "sunday"
-            else:
-                pass
-    
-    def kor_eng_dinner(self):
-        dinner = self.dinner
-        for i in range(len(dinner.index)):
-            if dinner['season'][i] == "겨울":
-                dinner['season'][i] = "winter"
-            elif dinner['season'][i] == "봄":
-                dinner['season'][i] = "spring"
-            elif dinner['season'][i] == "여름":
-                dinner['season'][i] = "summer"
-            elif dinner['season'][i] == "가을":
-                dinner['season'][i] = "fall"
-            else:
-                pass
-        
-        for i in range(len(dinner.index)):
-            if dinner['weekdays'][i] == "월":
-                dinner['weekdays'][i] = "monday"
-            elif dinner['weekdays'][i] == "화":
-                dinner['weekdays'][i] = "tuesday"
-            elif dinner['weekdays'][i] == "수":
-                dinner['weekdays'][i] = "wednesday"
-            elif dinner['weekdays'][i] == "목":
-                dinner['weekdays'][i] = "thursday"
-            elif dinner['weekdays'][i] == "금":
-                dinner['weekdays'][i] = "friday"
-            elif dinner['weekdays'][i] == "토":
-                dinner['weekdays'][i] = "saturday"
-            elif dinner['weekdays'][i] == "일":
-                dinner['weekdays'][i] = "sunday"
-            else:
-                pass
-
     #결측치 제거
-    def dropna_lunch(self):
-        lunch = self.kor_eng_lunch().dropna()
+    def dropna(self):
+        df = self.df.dropna()
 
-        return lunch
+        return df
 
-    def dropna_dinner(self):
-        dinner = self.kor_eng_dinner().dropna()
 
-        return dinner
+    def date_encoding(self):
+         #### 3. 연, 월, 일 칼럼과 계절 칼럼, 휴일 칼럼 만들기
+        data = self.dropna()
+        data['Year'] = data['datetime'].dt.strftime('%Y')
+        data['Month'] = data['datetime'].dt.strftime('%m')
+        data['Date'] = data['datetime'].dt.strftime('%d')
+        season = []
 
+        for index in range(len(data)):
+            if self.dropna()['Month'][index] == '03' or data['Month'][index] == '04' or data['Month'][index] == '05':
+                season.append('봄')
+            elif data['Month'][index] == '06' or data['Month'][index] == '07' or data['Month'][index] == '08':
+                season.append('여름')
+            elif data['Month'][index] == '09' or data['Month'][index] == '10' or data['Month'][index] == '11':
+                season.append('가을')
+            elif data['Month'][index] == '12' or data['Month'][index] == '01' or data['Month'][index] == '02':
+                season.append('겨울')
+        
+        data['Season'] = season
+
+        holiday_gap=[]
+
+        for i in range(len(data)):
+            if i == len(data) -1:
+                holiday_gap.append("N")
+            elif int((pd.to_datetime(data['datetime'][i+1])-pd.to_datetime(data['datetime'][i])).days)==1:
+                holiday_gap.append("N")
+            elif int((pd.to_datetime(data['datetime'][i+1])-pd.to_datetime(data['datetime'][i])).days)==2:
+                holiday_gap.append("Y")
+            elif int((pd.to_datetime(data['datetime'][i+1])-pd.to_datetime(data['datetime'][i])).days)==3:
+                holiday_gap.append("N")
+            else:
+                holiday_gap.append("Y")
+                
+        data['연휴'] = holiday_gap
+
+        return data
+    
+
+    def lunch_dinner(self):
+        df = self.date_encoding()
+        lunch = df.loc[:, ['datetime', 'season', 'year', 'month', 'date', 'weekdays', 'vacation', 'worker_number', 'real_number', 'vacation_number', 'biztrip_number', 'overtime_number', 'telecom_number', 'temperature', 'rain', 'wind', 'humidity', 'discomfort_index', 'perceived_temperature', 'lunch_rice', 'lunch_soup', 'lunch_main', 'new_lunch', 'lunch_number']]
+        dinner = df.loc[:, ['datetime', 'season', 'year', 'month', 'date', 'weekdays', 'vacation', 'worker_number', 'real_number', 'vacation_number', 'biztrip_number', 'overtime_number', 'telecom_number', 'temperature', 'rain', 'wind', 'humidity', 'discomfort_index', 'perceived_temperature', 'dinner_rice', 'dinner_soup', 'dinner_main', 'new_dinner', 'dinner_number']]
+
+        return lunch, dinner
 
     #밥, 국, 메인반찬은 종류가 onehot encoding시 너무 복잡해집니다. 그래서 일반 밥과 특식 밥 메뉴 둘로 나눴고 Y, N으로 구분해줍니다.
     def rice_lunch(self):
-        lunch = self.dropna_lunch()
+        lunch = self.date_encoding()
         for index in range(len(lunch['lunch_rice'])):
             if index == "밥":
                 lunch['lunch_rice'][index] = "Y"
