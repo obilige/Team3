@@ -24,7 +24,8 @@ class Save_DB():
                 real_number int,
                 biztrip_number  int,
                 overtime_number int,
-                telecom_number  int    
+                telecom_number  int,
+                vacation_number int    
             )
             """
         cur.execute(hr)
@@ -309,11 +310,12 @@ class Save_DB():
     # Save_DB에 입력될 data는 Transform.make_csv의 리턴값이어야 합니다.
     # 위에 데이터프레임을 변환하는 것도 DB 저장 과정이니 위 코드를 결합하겠습니다.
     def split(self):
-        hr_data = self.make_csv().loc[:, ["datetime", "worker_number", "real_number", "biztrip_number", "overtime_number", "telecom_number"]]
-        lunch_data = self.make_csv().loc[:, ["datetime", "new_lunch", "lunch_rice", "lunch_soup", "lunch_main", "lunch_number"]]
-        dinner_data = self.make_csv().loc[:, ["datetime", "new_dinner", "dinner_rice", "dinner_soup", "dinner_main", "dinner_number"]]
-        weather_data = self.make_csv().loc[:, ["datetime", "temperature", 'rain', 'wind', 'humidity', 'discomfort_index', 'perceived_temperature']]
-        calendar_data = self.make_csv().loc[:, ['datetime', 'year', 'month', 'date', 'weekdays', 'season', 'vacation']]
+        df = self.make_csv()
+        hr_data = df.loc[:, ["datetime", "worker_number", "real_number", "biztrip_number", "overtime_number", "telecom_number", "vacation_number"]]
+        lunch_data = df.loc[:, ["datetime", "new_lunch", "lunch_rice", "lunch_soup", "lunch_main", "lunch_number"]]
+        dinner_data = df.loc[:, ["datetime", "new_dinner", "dinner_rice", "dinner_soup", "dinner_main", "dinner_number"]]
+        weather_data = df.loc[:, ["datetime", "temperature", 'rain', 'wind', 'humidity', 'discomfort_index', 'perceived_temperature']]
+        calendar_data = df.loc[:, ['datetime', 'year', 'month', 'date', 'weekdays', 'season', 'vacation']]
 
         return hr_data, lunch_data, dinner_data, weather_data, calendar_data
 
@@ -338,7 +340,7 @@ class Save_DB():
         next(file)
 
         for row in file:
-            cur.execute("insert into hr values(?, ?, ?, ?, ?, ?)", row)
+            cur.execute("insert into hr values(?, ?, ?, ?, ?, ?, ?)", row)
 
         conn.commit()
         conn.close()
@@ -401,7 +403,7 @@ def Load_DB():
             INNER JOIN weather ON calendar.datetime = weather.datetime
             INNER JOIN dinner ON calendar.datetime = dinner.datetime
             INNER JOIN lunch ON calendar.datetime = lunch.datetime
-            INNER JOIN hr ON calendar.datetime = hr.datetime"""
+            INNER JOIN hr ON calendar.datetime = hr.datetime;"""
     # 명령어를 담은 변수를 DB에 보내면 이 변수에 담긴 명령어를 실행하는 방식
     # 명령어 변수를 실어나르고 DB에 실행시키고 결과를 파이썬으로 불러오는 객체 존재.
 
