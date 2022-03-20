@@ -12,14 +12,16 @@ class LSTM:
     
 
     def learning_lunch(self):
+        lunch = self.lunch
         # 결측치 제거
-        self.lunch = self.lunch.dropna()
+        lunch = lunch.dropna()
+        lunch = lunch.drop(['datetime', 'year', 'month', 'date'], axis = 'columns')
 
         # 데이터 스케일링
         standard_scaler = StandardScaler()
-        lunch_fitted = standard_scaler.fit(self.lunch)
-        lunch_output = standard_scaler.transform(self.lunch)
-        lunch_output = pd.DataFrame(lunch_output, columns=self.lunch.columns, index=list(self.lunch.index.values))
+        lunch_fitted = standard_scaler.fit(lunch)
+        lunch_output = standard_scaler.transform(lunch)
+        lunch_output = pd.DataFrame(lunch_output, columns=lunch.columns, index=list(lunch.index.values))
         
         # train, validation, test data 만들기
         train_size = int(len(lunch_output)*0.6)
@@ -36,7 +38,7 @@ class LSTM:
         learning_rate = 0.01
         training_cnt = 100
         batch_size = 200
-        input_size = lunch_train_x.shape[1]
+        input_size = train_x.shape[1]
         time_step = 1
 
         # 시계열 배열 맞추기(데이터 총 수, ***time_step, 데이터 입력값 수)
@@ -73,13 +75,15 @@ class LSTM:
 
     def learning_dinner(self):
         # 결측치 제거
-        self.dinner = self.dinner.dropna()
+        dinner = self.dinner
+        dinner = dinner.dropna()
+        dinner = dinner.drop(['datetime', 'year', 'month', 'date'], axis = 'columns')
 
         # 데이터 스케일링
         standard_scaler = StandardScaler()
-        dinner_fitted = standard_scaler.fit(self.dinner)
-        dinner_output = standard_scaler.transform(self.dinner)
-        dinner_output = pd.DataFrame(dinner_output, columns=self.dinner.columns, index=list(self.dinner.index.values))
+        dinner_fitted = standard_scaler.fit(dinner)
+        dinner_output = standard_scaler.transform(dinner)
+        dinner_output = pd.DataFrame(dinner_output, columns=dinner.columns, index=list(dinner.index.values))
         
         # train, validation, test data 만들기
         train_size = int(len(lunch_output)*0.6)
@@ -96,7 +100,7 @@ class LSTM:
         learning_rate = 0.01
         training_cnt = 100
         batch_size = 200
-        input_size = dinner_train_x.shape[1]
+        input_size = train_x.shape[1]
         time_step = 1
 
         # 시계열 배열 맞추기(데이터 총 수, ***time_step, 데이터 입력값 수)
