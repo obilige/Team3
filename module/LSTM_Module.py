@@ -36,7 +36,7 @@ class LSTM_Module:
         self.training_cnt = training_cnt
         self.batch_size = batch_size
         self.time_step = time_step
-    
+
 
     def learning_lunch(self):
         lunch = self.lunch
