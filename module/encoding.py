@@ -23,8 +23,8 @@ class Train_Encoding():
     #밥, 국, 메인반찬은 종류가 onehot encoding시 너무 복잡해집니다. 그래서 일반 밥과 특식 밥 메뉴 둘로 나눴고 Y, N으로 구분해줍니다.
     def rice_lunch(self):
         lunch = self.seperate()[0]
-        for index in range(len(lunch['lunch_rice'])):
-            if index == "밥":
+        for index in lunch.index:
+            if lunch['lunch_rice'][index] == "밥":
                 lunch['lunch_rice'][index] = "Y"
             else:
                 lunch['lunch_rice'][index] = "N"
@@ -36,8 +36,8 @@ class Train_Encoding():
         
     def rice_dinner(self):
         dinner = self.seperate()[1]
-        for index in range(len(dinner['dinner_rice'])):
-            if index == "밥":
+        for index in dinner.index:
+            if dinner['dinner_rice'][index]== "밥":
                 dinner['dinner_rice'][index] = "Y"
             else:
                 dinner['dinner_rice'][index] = "N"

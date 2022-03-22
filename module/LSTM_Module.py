@@ -5,10 +5,37 @@
 # lunch = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/data/lunch_df_encoding.csv")
 # dinner = pd.read_csv("/content/drive/MyDrive/Colab Notebooks/data/dinner_df_encoding.csv")
 
-class LSTM:
-    def __init__(self, lunch, dinner):
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder, MinMaxScaler, StandardScaler # Feature Scaling
+
+import tensorflow as tf
+from tensorflow import keras
+import keras.backend as K
+from tensorflow.keras import layers
+from tensorflow.keras import activations
+from tensorflow.keras import models
+from tensorflow.keras.models import Sequential
+from keras.layers.core import Dense, Dropout
+from tensorflow.keras.optimizers import Adam,SGD
+from keras.utils import np_utils
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.layers import LSTM
+
+
+class LSTM_Module:
+    def __init__(self, lunch, dinner, lr, training_cnt, batch_size, time_step):
         self.lunch = lunch
         self.dinner = dinner
+        self.lr = lr
+        self.training_cnt = training_cnt
+        self.batch_size = batch_size
+        self.time_step = time_step
     
 
     def learning_lunch(self):
@@ -35,11 +62,11 @@ class LSTM:
         test_y = np.array(lunch_output['lunch_number'][validation_size:])
         
         # 파라미터
-        learning_rate = 0.01
-        training_cnt = 100
-        batch_size = 200
+        learning_rate = self.lr
+        training_cnt = self.training_cnt
+        batch_size = self.batch_size
         input_size = train_x.shape[1]
-        time_step = 1
+        time_step = self.time_step
 
         # 시계열 배열 맞추기(데이터 총 수, ***time_step, 데이터 입력값 수)
         train_x = train_x.reshape(train_x.shape[0], time_step, input_size)
@@ -97,11 +124,11 @@ class LSTM:
         test_y = np.array(dinner_output['dinner_number'][validation_size:])
 
         # 파라미터
-        learning_rate = 0.01
-        training_cnt = 100
-        batch_size = 200
+        learning_rate = self.lr
+        training_cnt = self.training_cnt
+        batch_size = self.batch_size
         input_size = train_x.shape[1]
-        time_step = 1
+        time_step = self.time_step
 
         # 시계열 배열 맞추기(데이터 총 수, ***time_step, 데이터 입력값 수)
         train_x = train_x.reshape(train_x.shape[0], time_step, input_size)
