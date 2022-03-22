@@ -58,3 +58,12 @@
     + 저녁 : loss: 0.0013 - mae: 0.0250 - mape: 11.4684
     + Validation 데이터로 성능 점검해본 결과 Machine Learning보다 우수한 성능을 보임
 ![이미지](https://github.com/obilige/Team3/blob/master/image/Diagram_7.jpg)
+
+## 5. Module
+- Module : Python Class를 이용해 데이터전처리부터 분석까지 전 코드 과정 자동화
+    + 구성 : sql.py, encoding.py, XGBR.py, LSTM_Module.py
+    + 순서 : sql.py -> encoding.py -> XGBR.py or LSTM_Module.py
+        * sql.py : SQLite로 DB 파일 만들고 데이터를 저장한 후 데이터테이블을 파이썬에 재추출
+        * encoding.py : DB에서 추출한 데이터를 분석에 적합하도록 조작
+        * XGBR.py : XGBRegressor를 이용한 식수인원 예측 분석
+        * LSTM_Module.py : Tensorflow RNN LSTM 시계열 예측 분석(구글 코랩에서 분석되도록 세팅)
