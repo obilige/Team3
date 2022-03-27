@@ -9,6 +9,12 @@
     + scikit-learn과 tensorflow로 예측모델 구축
     + DB 생성 및 DB에 데이터 입력, 데이터 전처리, 데이터 분석 모델 수립 및 실행까지 모듈화(module)
 - 팀원 : @acesaga, @jiyun193, @kserjseob
+- 구성 :
+    + Team : 각 팀원별 작업과정, 작업과정 중 생각, 고민 담긴 쥬피터노트북 파일(확장명 .ipynb)
+    + module : 작업을 자동화해줄 모듈 파일(확장명 .py)
+    + SQL : SQLite로 만든 DB 파일(확장명 .db)
+    + R : R을 통한 통계 보고서(확장명 .Rmd/.html)
+    + ppt : 프로젝트 과정 및 결과를 담은 ppt 파일
 
 ## 1. Library
 - python : 3.9.7
