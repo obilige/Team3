@@ -76,10 +76,11 @@
 
 
 ## 6. Deep Learning Module Update
+- directory : DL_module
 - 커맨드 창에서 .py 실행하면 자동으로 훈련, 예측 결과 도출이 이뤄질 수 있도록 만들 예정
 - utils.py : 전처리부터 훈련에 필요한 기타 함수 모음 모듈
 - model.py : LSTM 모델이 저장된 .py 파일
 - train.py : 훈련 진행 -> .h5 파일로 모델 생성하는 모듈
 - predict.py : 식수 인원 예측 결과 데이터를 도출하는 모듈
-- 목표 : Docker, Linux 서버에서 식수인원예측 Deep Learning 서비스 제공하는 것
 - 과정 : SQL에서 식수인원예측에 필요한 데이터 추출 -> 데이터프레임으로 생성 -> 전처리 -> 훈련 -> 모델 생성 -> 예측
+- 발전목표 : Docker, Linux 서버에서 식수인원예측 Deep Learning 서비스 제공하는 것
