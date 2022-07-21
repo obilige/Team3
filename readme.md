@@ -28,7 +28,7 @@
 
 
 ## 2. DataFrame
-![이미지](https://github.com/obilige/Team3/blob/master/image//Diagram_3.jpg)
+![이미지](https://github.com/obilige/Team3/blob/master/image/Diagram_3.jpg)
 - 결과변수 : 점심 인원 / 저녁 인원
 - 원인변수 : 회사 근로자 수 / 일일 실질 근무자 수 / 메뉴 /
 - 파생변수 :
