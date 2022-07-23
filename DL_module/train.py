@@ -1,6 +1,7 @@
 import argparse
 from datetime import timedelta
 import matplotlib.pyplot as plt
+from DL_module.utils import trans_train
 import model
 from utils import read_SQL, preprocessing, split_timeseries, trans_timeseries
 from keras.callbacks import EarlyStopping, ModelCheckpoint
@@ -28,7 +29,7 @@ class Make_model:
 
         df = read_SQL(start, end)
         feature_df, label_df = preprocessing(df)
-        feature_np, label_np = trans_timeseries(feature_df=feature_df, label_df=label_df, time_step=self.time_step)
+        feature_np, label_np = trans_train(feature_df=feature_df, label_df=label_df, time_step=self.time_step)
         self.feature_train, self.label_train, self.feature_validation, self.label_validation = split_timeseries(feature_np, label_np, ratio)
     
 
