@@ -3,15 +3,14 @@ from datetime import timedelta
 import matplotlib.pyplot as plt
 from DL_module.utils import trans_train
 import model
-from utils import read_SQL, preprocessing, split_timeseries, trans_timeseries
+from utils import read_lunch_SQL, read_dinner_SQL, preprocessing, split_timeseries, trans_train 
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 class Make_model:
     def __init__(
-        self, start, end, ratio, learning_rate, time_step, channel, epoch, batch 
+        self, type, ratio, learning_rate, time_step, channel, epoch, batch 
     ):
-        self.start = start,
-        self.end = end,
+        self.tpye = type,
         self.ratio = ratio,
         self.learning_rate = learning_rate,
         self.time_step = time_step,
@@ -20,14 +19,17 @@ class Make_model:
         self.batch = batch
 
     def prepare_data(self):
-        start = self.start
-        end = self.end
+        type = self.type
         ratio = self.ratio
 
         if ratio >= 1 or ratio < 0:
             print('ERROR! : Ratio range is 0 - 1 /// 10% = 0.1')
-
-        df = read_SQL(start, end)
+        
+        if type == 'lunch':
+            df = read_lunch_SQL()
+        elif type == 'dinner':
+            df = read_dinner_SQL()
+        
         feature_df, label_df = preprocessing(df)
         feature_np, label_np = trans_train(feature_df=feature_df, label_df=label_df, time_step=self.time_step)
         self.feature_train, self.label_train, self.feature_validation, self.label_validation = split_timeseries(feature_np, label_np, ratio)
@@ -38,7 +40,7 @@ class Make_model:
 
         check_point = ModelCheckpoint(
             f"models/model_{self.start}_{self.end}_{self.time_step}.h5",
-            verbose = 1
+            verbose = 1,
             save_best_only = True
         )
 
@@ -73,8 +75,7 @@ if __name__ == "__main__":
     parser.add_argument("-b", "--batch", default=200, type=int)
 
     args = parser.parse_args()
-    start = args.start
-    end = args.end
+    type = args.type
     ratio = args.ratio
     learning_rate = args.learning_rate
     time_step = args.time_step
@@ -83,7 +84,7 @@ if __name__ == "__main__":
     batch = args.batch
 
     training = Make_model(
-        start, end, ratio, learning_rate, time_step, channel, epoch, batch
+        type, ratio, learning_rate, time_step, channel, epoch, batch
     )
     training.prepare_data()
     training.train()
